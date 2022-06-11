@@ -127,10 +127,6 @@ export default function Home (){
             isAuth ? 
             <div className="bg-gray-100">
             <Navbar id_user={user.id_user}/>
-            
-            <div>Halo, Selamat datang {user.username} !</div>
-            <button onClick={GetInfoTotal}>Click</button>
-
             <>
             <main className="container mx-w-6xl  mx-auto py-4 h-full ">
                 <div className="flex flex-col space-y-8">

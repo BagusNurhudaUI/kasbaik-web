@@ -8,7 +8,9 @@ module.exports = {
         'secondary': '#ffed4a',
         'danger': '#e3342f',
               }),
-      
+      fontFamily: {
+        'poppins': ['Poppins', 'sans-serif'] 
+      },
     },
     maxWidth: {
       '1/2': '50%',

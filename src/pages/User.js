@@ -125,10 +125,10 @@ const User =  () => {
         </div>
          : 
         isAuth ? 
-        <>
+        <div className="bg-gray-100">
         <Navbar />
         <div className="App" style={{ height: "100%" }}>
-        <div className="min-h-screen bg-gray-100 text-gray-900">
+        <div className="max-w-sm mx-auto min-h-screen bg-gray-100 text-gray-900">
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
             <div className="">
             <h1 className="text-xl">List User Peminjam Kasbaik <button onClick={getUser}>click to refresh</button></h1>
@@ -140,7 +140,7 @@ const User =  () => {
         </main>
         </div>
         </div>
-        </>
+        </div>
         : 
             <div>
                 <div>anda belum terautentikasi </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'
 import axios from 'axios';
 import { BrowserRouter as Router, Routes,  Route, useParams} from 'react-router-dom';
+import { Menu } from '@headlessui/react'
 
 const UserDetail = (id) => {
 
@@ -50,19 +51,43 @@ const UserDetail = (id) => {
                 <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 px-4 xl:p-0 gap-y-4 md:gap-6">
                     <div className="md:col-span-2 xl:col-span-3 bg-white p-6 rounded-2xl border border-gray-50">
                     <div class="flex flex-col items-center pb-5">
-                        <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src={require('../assets/png/favicon.png')} alt="Bonnie image"/>
-                        <h5 class="mb-1 text-xl font-medium text-gray-400 ">Bonnie Green</h5>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">Visual Designer</span>
+                        <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src={profile.foto_diri} alt="Bonnie image"/>
+                        <h5 class="mb-1 text-xl font-medium text-gray-400 ">{profile.nama_lengkap} </h5>
                     </div> 
-                    <div className="flex flex-col space-y-6 md:h-full md:justify-start">
-                        <div className="flex justify-between">
+                    <div className="flex flex-col space-y-4 md:h-full md:justify-start">
+                        <div className="flex justify-center">
                         <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
                             Informasi Akun
                         </span>
-                        <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
-                            Total Pendanaan
-                        </span>
                         </div>
+                        <div className=" flex flex-col space-y-3">
+                            <div className="flex justify-center">
+                                <p className="text-xs text-gray-600 flex justify-between">
+                            Phone   : {profile.phone}
+                                </p>
+                            </div>
+                            <div className="flex justify-center">
+                                <p className="text-xs text-gray-600 flex justify-between">
+                            Umur    : {profile.usia}
+                                </p>
+                            </div>
+                            <div className="flex justify-center">
+                                <p className="text-xs text-gray-600 flex justify-between">
+                            Profesi   : {profile.profesi}
+                                </p>
+                            </div>
+                            <div className="flex justify-center">
+                                <p className="text-xs text-gray-600 flex justify-between">
+                            Jenis Kelamin   : {profile.gender}
+                                </p>
+                            </div>
+                            <div className="flex justify-center">
+                                <p className="text-xs text-gray-600 flex justify-between">
+                            Alamat   : {profile.alamat_tinggal}
+                                </p>
+                            </div>
+                        </div>
+                        
                     </div>
                     </div>
                     <div className="col-span-2 p-6 rounded-2xl bg-gradient-to-r from-emerald-700 to-emerald-900 flex flex-col justify-between">
@@ -89,51 +114,79 @@ const UserDetail = (id) => {
                 </div>
                 {/* End First Row */}
                 {/* Start Second Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-4 xl:p-0 gap-4 xl:gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 px-4 xl:p-0 gap-4 xl:gap-6">
                     <div className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-between">
                     <h2 className="text-xs md:text-sm text-gray-700 font-bold tracking-wide md:tracking-wider">
-                        Informasi Kasbaik
+                        Informasi Peminjaman
                     </h2>
                     
                     </div>
-                    <a href='/user' className="bg-white p-6 rounded-xl border border-gray-50 cursor-pointer">
-                    <div className="flex justify-between items-start">
-                        <div className="flex flex-col">
-                        <p className="text-xs text-gray-600 tracking-wide">
-                           Pengguna
-                        </p>
-                        <h3 className="mt-2 text-lg text-emerald-800 font-bold"></h3>
-                        <span className="mt-2 text-xs text-gray-500">
-                            Update terakhir 1 menit yang lalu
+                    <div  className="bg-white p-5 rounded-xl border border-gray-50 ">
+                        <div className="flex justify-center pb-4">
+                            <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
+                                Riwayat Peminjaman
+                            </span>
+                        </div>
+                        <div className="flex flex-col gap-4">
+                            {peminjaman[0] === undefined ? null : 
+                            peminjaman.map( p => {
+                                return (
+                                    <div className="flex flex-col bg-gray-100 p-2 rounded-sm gap-2">
+                                        <div className="flex justify-between">
+                                            <div className='flex justify-between'>
+                                                <img src={require('../assets/png/bank.png')} alt='logo' className='h-4 w-auto'/>
+                                                <p className='text-xs px-2'>No.{p.pinjaman_ke}</p>
+                                            </div>
+                                            <p className='text-xs '>{p.createdAt.split("T")[0]}</p>
+                                            <p className='text-xs px-2 uppercase'>{p.status}</p>
+                                    
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <p className='text-s'>tenor: {p.tenor}</p>
+                                            <p className='text-s font-medium'>Rp. {p.loan_amount}</p>
+                                            <a href="#"className="text-s px-2 rounded-md bg-yellow-500 hover:bg-yellow-200">lihat</a>
+                                        </div>
+                                    </div>
+                                )
+
+                            })}
+                            
+                        </div>
+                        
+                    </div>
+                    <div className="bg-white p-5 rounded-xl border border-gray-50 ">
+                        <div className="flex justify-center pb-4">
+                        <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
+                            Riwayat Pembayaran
                         </span>
                         </div>
-                        <div className="bg-yellow-500 p-2 md:p-1 xl:p-2 rounded-md">
-                        <img
-                            src={require('../assets/png/account.png')}
-                            alt="icon"
-                            className="w-auto h-10 md:h-6 xl:h-8 "
-                        />
+                        <div className="flex flex-col gap-4">
+                            {peminjaman[0] === undefined ? null : 
+                            peminjaman.map( p => {
+                                return (
+                                    <div className="flex flex-col bg-gray-200 p-2 rounded-sm gap-2">
+                                        <div className="flex justify-between">
+                                            <div className='flex justify-between'>
+                                                <img src={require('../assets/png/bank.png')} alt='logo' className='h-4 w-auto'/>
+                                                <p className='text-xs px-2'>No.{p.pinjaman_ke}</p>
+                                            </div>
+                                            <p className='text-xs '>{p.createdAt.split("T")[0]}</p>
+                                            <p className='text-xs px-2 uppercase'>{p.status}</p>
+                                    
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <p className='text-s'>tenor: {p.tenor}</p>
+                                            <p className='text-s font-medium'>Rp. {p.loan_amount}</p>
+                                            <a href="#"className="text-s px-2 rounded-md bg-yellow-500 hover:bg-yellow-200">lihat</a>
+                                        </div>
+                                    </div>
+                                )
+
+                            })}
+                            
                         </div>
+
                     </div>
-                    </a>
-                    <a href='/mitra' className="bg-white p-6 rounded-xl border border-gray-50 ">
-                    <div className="flex justify-between items-start">
-                        <div className="flex flex-col">
-                        <p className="text-xs text-gray-600 tracking-wide">Mitra &amp; Partner</p>
-                        <h3 className="mt-2 text-lg text-emerald-800 font-bold"></h3>
-                        <span className="mt-2 text-xs text-gray-500">
-                        Update terakhir 1 menit yang lalu
-                        </span>
-                        </div>
-                        <div className="bg-yellow-500 p-2 md:p-1 xl:p-2 rounded-md">
-                        <img
-                            src={require('../assets/png/store.png')}
-                            alt="icon"
-                            className="w-auto h-10 md:h-6 xl:h-8 object-cover"
-                        />
-                        </div>
-                    </div>
-                    </a>
                 </div>
                 {/* End Second Row */}
                 {/* Start Third Row */}
