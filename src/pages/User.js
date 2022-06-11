@@ -22,18 +22,15 @@ const User =  () => {
             .then((response) => {
               setisAuth(true)
               const obj = response.data
-                
+              console.log(obj);
               obj.forEach((user) => {
                 const pinjaman = 0
-                axios.get(`http://localhost:8080/borrower/${user.id_user}`, {
-                headers :
-                    {      
-                        "authorization": token,      
-                    }  
-                })
-                .then((response) => {
-                  console.log(response);
-                })
+                let image = ''
+                if(user.foto_diri === null){
+                  image= ``
+                }else {
+                  image=`${user.foto_diri}`
+                }
                 const data1 = {
                     id_user : user.id_user, 
                     name : user.username,
@@ -44,7 +41,7 @@ const User =  () => {
                     gender: user.gender,
                     profesi: user.profesi,
                     usia: user.usia,
-                    imgUrl : `${user.foto_diri}`
+                    imgUrl : image,
                 }
                 data.push(data1)
               })

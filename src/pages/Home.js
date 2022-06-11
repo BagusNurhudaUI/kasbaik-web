@@ -4,7 +4,11 @@ import {Navigate, Route, useNavigate,} from 'react-router-dom'
 import { useCookies } from 'react-cookie';
 import Navbar from '../components/Navbar';
 import ClipLoader from "react-spinners/ClipLoader";
-import Peminjaman from './Peminjaman';
+import { Pie ,Polar, PolarArea } from "react-chartjs-2";
+import {Chart, ArcElement} from 'chart.js'
+import { Chart as ChartJS} from "chart.js/auto";
+Chart.register(ArcElement);
+
 
 export default function Home (){
     const [jwt, setjwt] = useState('');
@@ -16,16 +20,35 @@ export default function Home (){
     const [totalmitra, setTotalmitra] = useState(0)
     const [peminjaman, setPeminjaman] = useState(0)
     const [totalpayment, setTotalpaymnet] = useState(0)
+    const [payment, setPayment] = useState({})
     const navigate = useNavigate()
     
     
-    // const GetToken = () => { 
-    //     console.log('masuk ke get token');
-    // }
+    const userData = {
+        labels: ['Pending', 'Rejected', 'Accepted',
+        'Payment', 'Done'],
+        datasets: [
+          {
+            label: "Status Peminjaman",
+            data: [65, 59, 80, 81, 56],
+            backgroundColor: [
+              "rgba(75,192,192,1)",
+              "#ecf0f1",
+              "#50AF95",
+              "#f3ba2f",
+              "#2a71d0",
+            ],
+            borderColor: "black",
+            borderWidth: 1,
+          },
+        ],
+      }
+
     const GetInfo = async(e) => {
         console.log('masuk ke get info');
         const token = localStorage.getItem("token2") || "";
         try {
+            
             await axios.get('http://localhost:8080/home', {
                 headers :
                     {      
@@ -55,14 +78,16 @@ export default function Home (){
                     }  
             })
             .then((response) =>{
-                console.log(response.data);
                 setTotaluser(response.data.totaluser.length)
                 setTotalmitra(response.data.totalmitra.length)
                 setPeminjaman(response.data.totalborrower.length)
                 setTotalpaymnet(response.data.totalpayment)
+                setPayment(response.data.payment)
+                console.log(payment[0]===undefined);
             })
-        } catch (error) {
             
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -70,6 +95,7 @@ export default function Home (){
         console.log('clicked');
         navigate("/")
     }
+
     let [loading, setLoading] = useState(true);
     useEffect(() => {
         setTimeout(() => {
@@ -77,9 +103,12 @@ export default function Home (){
         }, 500)
     }, [])
 
+    
     useEffect(() => {
-        console.log('useEffect');
         GetInfo()
+    }, [])
+
+    useEffect(() => {
         GetInfoTotal()
     }, [])
 
@@ -119,7 +148,7 @@ export default function Home (){
                         <div className="flex gap-2 md:gap-4 justify-between items-center">
                         <div className="flex flex-col space-y-4">
                             <h2 className="text-gray-800 font-bold tracking-widest leading-tight">
-                            {user.username}
+                            {user.username ? user.username : <p className="text-italic">not logged</p> }
                             </h2>
                             <div className="flex items-center gap-4">
                             <p className="text-lg text-gray-600 tracking-wider">
@@ -292,7 +321,9 @@ export default function Home (){
                         </h2>
                         </div>
                     </div>
-                    <canvas id="myChart" />
+                    {/* <img src= {require('../assets/png/login.jpg')}/> */}
+                    <PolarArea data={userData}
+                    />
                     </div>
                     <div className="col-span-3 bg-white p-6 rounded-xl border border-gray-50 flex flex-col space-y-6">
                     <div className="flex justify-between items-center">
@@ -307,7 +338,26 @@ export default function Home (){
                         </a>
                     </div>
                     <ul className="divide-y-2 divide-gray-100 overflow-x-auto w-full">
-                        <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
+                        
+                        {payment[0] === undefined ? <div></div> :
+                        payment.map((pay ,i) => {
+                            if(i >= 5){
+                            return;
+                            }
+                            return (
+                             <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
+                             <p className="px-4 font-semibold flex items-center">{pay.createdAt}</p>
+                             <p className="px-4 text-gray-600 flex items-center">{pay.nama_lengkap}</p>
+                             <p className="px-4 tracking-wider flex items-center">{pay.payment_method}</p>
+                             <p className="px-4 text-emerald-800 flex items-center">{pay.partner_name}</p>
+                             <p className="md:text-base text-gray-800 flex items-center gap-2">
+                                 Rp.{pay.amount_payment}
+                             </p>
+                             </li>
+                            )
+                        })}
+                           
+                        {/* <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
                         <p className="px-4 font-semibold">Today</p>
                         <p className="px-4 text-gray-600">McDonald</p>
                         <p className="px-4 tracking-wider">Cash</p>
@@ -444,7 +494,7 @@ export default function Home (){
                             />
                             </svg>
                         </p>
-                        </li>
+                        </li> */}
                     </ul>
                     </div>
                 </div>
