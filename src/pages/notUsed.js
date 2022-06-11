@@ -1,6 +1,6 @@
 import React , {useState} from 'react';
 import Navbar from '../components/Navbar'
-import Table, {AvatarCell} from '../components/Table'
+import Table, {AvatarCell} from '../components/TableUser'
 import axios from 'axios';
 
 

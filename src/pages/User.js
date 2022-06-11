@@ -7,7 +7,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 const User =  () => {
     const [user, setUser] = useState([])
-    const [isAuth, setisAuth] = useState(false);
+    const [isAuth, setisAuth] = useState(true);
 
     const getUser = async () => {
         const data = []
@@ -23,17 +23,28 @@ const User =  () => {
               setisAuth(true)
               const obj = response.data
                 
-              obj.forEach(user => {
+              obj.forEach((user) => {
+                const pinjaman = 0
+                axios.get(`http://localhost:8080/borrower/${user.id_user}`, {
+                headers :
+                    {      
+                        "authorization": token,      
+                    }  
+                })
+                .then((response) => {
+                  console.log(response);
+                })
                 const data1 = {
                     id_user : user.id_user, 
                     name : user.username,
                     email : user.email,
                     phone : user.phone,
-                    department: 'Security',
-                    status: 'Active',
-                    role: user.role,
-                    age: 24,
-                    imgUrl : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60'
+                    pinjaman : pinjaman,
+                    alamat : user.alamat_tinggal,
+                    gender: user.gender,
+                    profesi: user.profesi,
+                    usia: user.usia,
+                    imgUrl : `${user.foto_diri}`
                 }
                 data.push(data1)
               })
@@ -67,20 +78,30 @@ const User =  () => {
       accessor: 'phone',
       },
       {
-      Header: "Status",
-      accessor: 'status',
+      Header: "Usia",
+      accessor: 'usia',
       //Cell: StatusPill,
       },
       {
-      Header: "Age",
-      accessor: 'age',
+      Header: "Gender",
+      accessor: 'gender',
       },
       {
-      Header: "Role",
-      accessor: 'role',
+        Header: "Pekerjaan",
+        accessor: 'profesi',
+      },
+      {
+      Header: "Alamat",
+      accessor: 'alamat',
       //Filter: SelectColumnFilter,  // new
       filter: 'includes',
       },
+      {
+        Header: "Jumlah Pinjaman",
+        accessor: 'pinjaman',
+        //Filter: SelectColumnFilter,  // new
+        filter: 'includes',
+        },
     ], [])  
    
     
@@ -112,7 +133,7 @@ const User =  () => {
         <div className="min-h-screen bg-gray-100 text-gray-900">
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
             <div className="">
-            <h1 className="text-xl">List User Peminjam Kasbaik</h1>
+            <h1 className="text-xl">List User Peminjam Kasbaik <button onClick={getUser}>click to refresh</button></h1>
             </div>
             <div className="mt-4">
             <Table columns={columns} data={data} />

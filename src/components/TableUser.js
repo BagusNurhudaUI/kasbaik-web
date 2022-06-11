@@ -167,7 +167,7 @@ function Table({ columns, data }) {
       {/* table */}
       <div className="mt-4 flex flex-col">
         <div className="-my-2 overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
-          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div className="py-2 align-middle inline-block min-w-full sm:px-1 md:px-4 lg:px-8">
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
               <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
@@ -213,7 +213,7 @@ function Table({ columns, data }) {
                                 return (
                                     <td
                                         {...cell.getCellProps()}
-                                        className="px-10 py-4 whitespace-nowrap"
+                                        className="md:px-10 md:py-4 whitespace-nowrap sm:px-2 sm:py-2 "
                                         role="cell"
                                         
                                     >
@@ -236,7 +236,7 @@ function Table({ columns, data }) {
                             
                                 <td
                                 {...cell.getCellProps()}
-                                className="px-6 py-4 whitespace-nowrap"
+                                className="md:px-6 md:py-4 whitespace-nowrap sm:px-2 sm:py-2"
                                 role="cell"
                                 >
                                 {cell.column.Cell.name === "defaultRenderer"
