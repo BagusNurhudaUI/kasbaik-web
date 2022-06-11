@@ -18,24 +18,21 @@ const  Login = () =>{
     
     const login = async(e) => {
         e.preventDefault();
-        console.log(email, password);
         try {
             await axios.post('http://localhost:8080/login', {
                 email: email,
                 password: password,
             })
             .then((response) =>{
-                // if ( response.data.user.role !== 'admin') {
-                //   setMsg("Anda bukan admin dari kasbaik")
-                //   throw message
-                // }
                 const token = response.data.tokenweb
                 localStorage.setItem('token2', token);
                 navigate("/home")
             })
-            
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
+            if (error.message === 'Network Error'){
+              setMsg('Backend Error: Cannot load to database!')
+            }
             if( error.response){
               setMsg(error.response.data.message );
             }
@@ -43,7 +40,8 @@ const  Login = () =>{
         }
         
     }
-
+    
+    
     return (
       
       <>
@@ -108,9 +106,11 @@ const  Login = () =>{
                   </button>
                 </form>
                 <hr className="my-6 border-gray-300 w-full" />
-                <p className="mt-8 text-lg">
-                 {message}
-                </p>
+                {message ? <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                  <span class="font-medium">Something Wrong!</span> {message}
+                </div> : null}
+                
+
                 <p className="text-sm text-gray-500 mt-12">
                   © 2022 Kasbaik - All Rights Reserved.
                 </p>

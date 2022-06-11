@@ -4,7 +4,7 @@ import Table, {AvatarCell} from '../components/TableUser'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ClipLoader from "react-spinners/ClipLoader";
-
+import foto from '../assets/png/account1.png'
 const User =  () => {
     const [user, setUser] = useState([])
     const [isAuth, setisAuth] = useState(true);
@@ -27,10 +27,11 @@ const User =  () => {
                 const pinjaman = 0
                 let image = ''
                 if(user.foto_diri === null){
-                  image= ``
+                  image= `${foto}`
                 }else {
                   image=`${user.foto_diri}`
                 }
+                console.log(image);
                 const data1 = {
                     id_user : user.id_user, 
                     name : user.username,

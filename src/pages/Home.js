@@ -7,6 +7,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { Pie ,Polar, PolarArea } from "react-chartjs-2";
 import {Chart, ArcElement} from 'chart.js'
 import { Chart as ChartJS} from "chart.js/auto";
+import Footer from '../components/Footer';
 Chart.register(ArcElement);
 
 
@@ -131,7 +132,7 @@ export default function Home (){
             <button onClick={GetInfoTotal}>Click</button>
 
             <>
-            <main className="container mx-w-6xl  mx-auto py-4 ">
+            <main className="container mx-w-6xl  mx-auto py-4 h-full ">
                 <div className="flex flex-col space-y-8">
                 {/* First Row */}
                 <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 px-4 xl:p-0 gap-y-4 md:gap-6">
@@ -207,7 +208,7 @@ export default function Home (){
                     </h2>
                     
                     </div>
-                    <div className="bg-white p-6 rounded-xl border border-gray-50">
+                    <a href='/user' className="bg-white p-6 rounded-xl border border-gray-50 cursor-pointer">
                     <div className="flex justify-between items-start">
                         <div className="flex flex-col">
                         <p className="text-xs text-gray-600 tracking-wide">
@@ -226,8 +227,8 @@ export default function Home (){
                         />
                         </div>
                     </div>
-                    </div>
-                    <div className="bg-white p-6 rounded-xl border border-gray-50">
+                    </a>
+                    <a href='/mitra' className="bg-white p-6 rounded-xl border border-gray-50 ">
                     <div className="flex justify-between items-start">
                         <div className="flex flex-col">
                         <p className="text-xs text-gray-600 tracking-wide">Mitra &amp; Partner</p>
@@ -244,8 +245,8 @@ export default function Home (){
                         />
                         </div>
                     </div>
-                    </div>
-                    <div className="bg-white p-6 rounded-xl border border-gray-50">
+                    </a>
+                    <a href='/peminjaman' className="bg-white p-6 rounded-xl border border-gray-50">
                     <div className="flex justify-between items-start">
                         <div className="flex flex-col">
                         <p className="text-xs text-gray-600 tracking-wide">Peminjaman</p>
@@ -264,8 +265,8 @@ export default function Home (){
                         />
                         </div>
                     </div>
-                    </div>
-                    <div className="bg-white p-6 rounded-xl border border-gray-50">
+                    </a>
+                    <a href='/pembayaran' className="bg-white p-6 rounded-xl border border-gray-50">
                     <div className="flex justify-between items-start">
                         <div className="flex flex-col">
                         <p className="text-xs text-gray-600 tracking-wide">
@@ -286,7 +287,7 @@ export default function Home (){
                         />
                         </div>
                     </div>
-                    </div>
+                    </a>
                 </div>
                 {/* End Second Row */}
                 {/* Start Third Row */}
@@ -331,8 +332,8 @@ export default function Home (){
                         Riwayat Pembayaran Terakhir
                         </h2>
                         <a
-                        href="#"
-                        className="px-4 py-2 text-xs bg-blue-100 text-blue-500 rounded uppercase tracking-wider font-semibold hover:bg-blue-300"
+                        href="/pembayaran"
+                        className="px-4 py-2 text-xs bg-yellow-500 text-white rounded uppercase tracking-wider font-semibold hover:bg-yellow-400"
                         >
                         More
                         </a>
@@ -357,144 +358,6 @@ export default function Home (){
                             )
                         })}
                            
-                        {/* <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
-                        <p className="px-4 font-semibold">Today</p>
-                        <p className="px-4 text-gray-600">McDonald</p>
-                        <p className="px-4 tracking-wider">Cash</p>
-                        <p className="px-4 text-blue-600">Food</p>
-                        <p className="md:text-base text-gray-800 flex items-center gap-2">
-                            16.90
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 9l-7 7-7-7"
-                            />
-                            </svg>
-                        </p>
-                        </li>
-                        <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
-                        <p className="px-4 font-semibold">Today</p>
-                        <p className="px-4 text-gray-600">McDonald</p>
-                        <p className="px-4 tracking-wider">Cash</p>
-                        <p className="px-4 text-blue-600">Food</p>
-                        <p className="md:text-base text-gray-800 flex items-center gap-2">
-                            16.90
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 9l-7 7-7-7"
-                            />
-                            </svg>
-                        </p>
-                        </li>
-                        <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
-                        <p className="px-4 font-semibold">Today</p>
-                        <p className="px-4 text-gray-600">McDonald</p>
-                        <p className="px-4 tracking-wider">Cash</p>
-                        <p className="px-4 text-blue-600">Food</p>
-                        <p className="md:text-base text-gray-800 flex items-center gap-2">
-                            16.90
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 9l-7 7-7-7"
-                            />
-                            </svg>
-                        </p>
-                        </li>
-                        <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
-                        <p className="px-4 font-semibold">Today</p>
-                        <p className="px-4 text-gray-600">McDonald</p>
-                        <p className="px-4 tracking-wider">Cash</p>
-                        <p className="px-4 text-blue-600">Food</p>
-                        <p className="md:text-base text-gray-800 flex items-center gap-2">
-                            16.90
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 9l-7 7-7-7"
-                            />
-                            </svg>
-                        </p>
-                        </li>
-                        <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
-                        <p className="px-4 font-semibold">Today</p>
-                        <p className="px-4 text-gray-600">McDonald</p>
-                        <p className="px-4 tracking-wider">Cash</p>
-                        <p className="px-4 text-blue-600">Food</p>
-                        <p className="md:text-base text-gray-800 flex items-center gap-2">
-                            16.90
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 9l-7 7-7-7"
-                            />
-                            </svg>
-                        </p>
-                        </li>
-                        <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
-                        <p className="px-4 font-semibold">Today</p>
-                        <p className="px-4 text-gray-600">McDonald</p>
-                        <p className="px-4 tracking-wider">Cash</p>
-                        <p className="px-4 text-blue-600">Food</p>
-                        <p className="md:text-base text-gray-800 flex items-center gap-2">
-                            16.90
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 9l-7 7-7-7"
-                            />
-                            </svg>
-                        </p>
-                        </li> */}
                     </ul>
                     </div>
                 </div>
@@ -502,14 +365,17 @@ export default function Home (){
                 </div>
             </main>
             </>
-
+            {/* <div className='h-screen'></div> */}
+            <Footer />
             </div>
+            
             : 
                 <div>
                     <div>anda belum terautentikasi </div>
                     <button onClick={notAuth}>go to login page</button>
                 </div>
             }
+        
         </div>
        
         
