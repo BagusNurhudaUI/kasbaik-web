@@ -3,11 +3,12 @@ import React, {useState, useHistory, useEffect} from 'react';
 import {Navigate, Route, useNavigate,} from 'react-router-dom'
 import { useCookies } from 'react-cookie';
 import Navbar from '../components/Navbar';
-import ClipLoader from "react-spinners/ClipLoader";
+import Loading from '../components/Loading.js';
 import { Pie ,Polar, PolarArea } from "react-chartjs-2";
 import {Chart, ArcElement} from 'chart.js'
 import { Chart as ChartJS} from "chart.js/auto";
 import Footer from '../components/Footer';
+import NotAuth from '../components/NotAuth';
 Chart.register(ArcElement);
 
 
@@ -92,10 +93,6 @@ export default function Home (){
         }
     }
 
-    const notAuth = () => {
-        console.log('clicked');
-        navigate("/")
-    }
 
     let [loading, setLoading] = useState(true);
     useEffect(() => {
@@ -104,7 +101,6 @@ export default function Home (){
         }, 500)
     }, [])
 
-    
     useEffect(() => {
         GetInfo()
     }, [])
@@ -119,16 +115,12 @@ export default function Home (){
         
         <div> {
             loading ? 
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <ClipLoader 
-                 loading={loading} css size={100} />
-            </div>
+            <Loading loading={loading} />
              : 
             isAuth ? 
-            <div className="bg-gray-100">
+            <div className="bg-gray-100 h-full">
             <Navbar id_user={user.id_user}/>
-            <>
-            <main className="container mx-w-6xl  mx-auto py-4 h-full ">
+            <main className="container mx-w-6xl  mx-auto py-4 h-full min-h-screen">
                 <div className="flex flex-col space-y-8">
                 {/* First Row */}
                 <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 px-4 xl:p-0 gap-y-4 md:gap-6">
@@ -338,7 +330,7 @@ export default function Home (){
                         
                         {payment[0] === undefined ? <div></div> :
                         payment.map((pay ,i) => {
-                            if(i >= 5){
+                            if(i >= 7){
                             return;
                             }
                             return (
@@ -360,16 +352,13 @@ export default function Home (){
                 {/* End Third Row */}
                 </div>
             </main>
-            </>
+            
             {/* <div className='h-screen'></div> */}
             <Footer />
             </div>
             
             : 
-                <div>
-                    <div>anda belum terautentikasi </div>
-                    <button onClick={notAuth}>go to login page</button>
-                </div>
+                <NotAuth />
             }
         
         </div>

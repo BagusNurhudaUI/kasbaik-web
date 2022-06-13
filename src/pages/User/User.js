@@ -1,10 +1,12 @@
 import React , {useState, useEffect} from 'react';
-import Navbar from '../components/Navbar'
-import Table, {AvatarCell} from '../components/TableUser'
+import Navbar from '../../components/Navbar'
+import Table, {AvatarCell} from './TableUser'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ClipLoader from "react-spinners/ClipLoader";
-import foto from '../assets/png/account1.png'
+import foto from '../../assets/png/account1.png'
+import Footer from '../../components/Footer';
+import Loading from '../../components/Loading';
 const User =  () => {
     const [user, setUser] = useState([])
     const [isAuth, setisAuth] = useState(true);
@@ -119,27 +121,27 @@ const User =  () => {
     return (
       <div> {
         loading ? 
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <ClipLoader 
-             loading={loading} css size={100} />
-        </div>
+        <Loading loading={loading} />
          : 
         isAuth ? 
         <div className="bg-gray-100">
-        <Navbar />
-        <div className="App" style={{ height: "100%" }}>
-        <div className="max-w-sm mx-auto min-h-screen bg-gray-100 text-gray-900">
-        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-            <div className="">
-            <h1 className="text-xl">List User Peminjam Kasbaik <button onClick={getUser}>click to refresh</button></h1>
-            </div>
-            <div className="mt-4">
-            <Table columns={columns} data={data} />
-            {/* <Table columns={columns} data={data} map={mapFly} /> */}
-            </div>
-        </main>
-        </div>
-        </div>
+          <Navbar />
+          <div className="App" >
+          <div className="max-w-sm mx-auto min-h-screen bg-gray-100 text-gray-900">
+          <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+                      <div className="col-span-1  flex justify-center my-5">
+                          <h2 className="text-md md:text-lg text-gray-700 font-bold tracking-wide md:tracking-wider">
+                              Informasi List Pengguna
+                          </h2>
+                      </div>
+              <div className="mt-4">
+              <Table columns={columns} data={data} />
+              {/* <Table columns={columns} data={data} map={mapFly} /> */}
+              </div>
+          </main>
+          </div>
+          </div>
+          <Footer />
         </div>
         : 
             <div>

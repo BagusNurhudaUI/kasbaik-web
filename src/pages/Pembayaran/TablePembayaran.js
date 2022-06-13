@@ -1,9 +1,9 @@
 import React from 'react'
 import { useTable, useFilters, useGlobalFilter, useAsyncDebounce, useSortBy, usePagination } from 'react-table'
 import { ChevronDoubleLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDoubleRightIcon } from '@heroicons/react/solid'
-import { Button, PageButton } from '../shared/Button'
-import { classNames } from '../shared/Utils'
-import { SortIcon, SortUpIcon, SortDownIcon } from '../shared/Icons'
+import { Button, PageButton } from '../../shared/Button'
+import { classNames } from '../../shared/Utils'
+import { SortIcon, SortUpIcon, SortDownIcon } from '../../shared/Icons'
 import {useNavigate, Route, Link} from 'react-router-dom'
 
 // Define a default UI for filtering
@@ -140,9 +140,9 @@ function Table({ columns, data }) {
     usePagination,  // new
   )
   const navigate = useNavigate()
-  const getUserId =(id_user)=> {
-      console.log(id_user);
-      navigate(`/user/${id_user}`)
+  const getPaymentId =(id_payment)=> {
+      console.log(id_payment);
+      navigate(`/pembayaran/${id_payment}`)
   }
 
   // Render the UI for your table
@@ -217,7 +217,7 @@ function Table({ columns, data }) {
                                         role="cell"
                                         
                                     >
-                                    <a onClick={ () => {getUserId(cell.row.original.id_user)}}
+                                    <a onClick={ () => {getPaymentId(cell.row.original.id_payment)}}
                                      class="cursor-pointer"
                                     
                                         >

@@ -9,7 +9,9 @@ module.exports = {
         'danger': '#e3342f',
               }),
       fontFamily: {
-        'poppins': ['Poppins', 'sans-serif'] 
+        'poppins': ['Poppins', 'sans-serif'] ,
+        
+
       },
     },
     maxWidth: {

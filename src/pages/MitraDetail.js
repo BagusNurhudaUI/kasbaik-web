@@ -10,14 +10,12 @@ const UserDetail = (id) => {
     const [profile, setProfile] = useState([])
     const [peminjaman, setPeminjaman] = useState([])
     const [payment, setPayment] = useState([])
-    console.log(window.location.pathname.split('/')[2]);
-    const id_user = window.location.pathname.split('/')[2]
+    const id_mitra = window.location.pathname.split('/')[2]
 
-    const getUserDetails = async () => {
-        console.log('didalam getuser',id_user);
+    const getMitraDetails = async () => {
         const token = localStorage.getItem("token2");
         try {
-            await axios.get(`http://localhost:8080/useradmin/${id_user}` , {
+            await axios.get(`http://localhost:8080/mitraadmin/${id_mitra}` , {
                 headers :
                     {      
                         "authorization": token,      
@@ -25,10 +23,12 @@ const UserDetail = (id) => {
             })
             .then((response) =>{
                 console.log(response.data);
-                setProfile(response.data.profile)
+                setProfile(response.data.profile[0])
                 setPeminjaman(response.data.peminjaman)
                 setPayment(response.data.paymenthistory)
+
             })
+            console.log(profile);
 
         } catch (err) {
             console.log(err);
@@ -52,31 +52,30 @@ const UserDetail = (id) => {
     }, [])
 
     useEffect(() => {
-        getUserDetails()
+        getMitraDetails()
     }, [])
     
     return (
         <div>
-            {loading ? 
-            <Loading loading={loading}/>
-            :
+            {loading ?
+            <Loading loading={loading} />
+            :    
             <div>
-                <Navbar />
-            <div className="bg-gray-100">
-            <main className="container mx-w-6xl  mx-auto py-4 h-full ">
+            <Navbar />
+            <div className="bg-gray-100 h-full ">
+            <main className="container mx-w-6xl  mx-auto py-4 h-auto">
                 <div className="flex flex-col space-y-8">
-                {/* First Row */}
                 <div className="col-span-1 lg:col-span-2 flex justify-center">
                     <h2 className="text-xl md:text-lg text-gray-700 font-bold tracking-wide md:tracking-wider my-5 uppercase">
-                        Informasi Pengguna
+                        Informasi Mitra
                     </h2>
                     
-                </div>
+                    </div>
                 <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 px-4 xl:p-0 gap-y-4 md:gap-6">
                     <div className="md:col-span-2 xl:col-span-3 bg-white p-6 rounded-2xl border border-gray-50">
                     <div class="flex flex-col items-center pb-5">
-                        <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src={profile.foto_diri} alt="foto"/>
-                        <h5 class="mb-1 text-xl font-medium text-gray-400 ">{profile.nama_lengkap} </h5>
+                        <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src={profile.foto_profile === null ? require('../assets/png/account1.png') : profile.foto_profile} alt="foto"/>
+                        <h5 class="mb-1 text-xl font-medium text-gray-400 ">{profile.partner_name} </h5>
                     </div> 
                     <div className="flex flex-col space-y-4 md:h-full md:justify-start">
                         <div className="flex justify-center">
@@ -136,8 +135,7 @@ const UserDetail = (id) => {
                     </div>
                     </div>
                 </div>
-                {/* End First Row */}
-                {/* Start Second Row */}
+               
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 px-4 xl:p-0 gap-4 xl:gap-6">
                     <div className="col-span-1 md:col-span-2 lg:col-span-4 flex justify-between">
                     <h2 className="text-xs md:text-sm text-gray-700 font-bold tracking-wide md:tracking-wider">
@@ -151,12 +149,11 @@ const UserDetail = (id) => {
                                 Riwayat Peminjaman
                             </span>
                         </div>
-                        <div className='overflow-auto max-h-60'>
+                        <div className="flex flex-col gap-4 overflow-auto max-h-72 " >
                             {peminjaman[0] === undefined ? null : 
                             peminjaman.map( p => {
                                 return (
-                                    <div className="flex flex-col cursor-pointer" onClick={() => {goToPeminjamanDetail(p.id_borrower)}}>
-                                    <div className="flex flex-col bg-gray-100 p-2 rounded-sm gap-2 mt-2">
+                                    <div className="flex flex-col bg-gray-100 p-2 rounded-sm gap-2 cursor-pointer" onClick={() => {goToPeminjamanDetail(p.id_borrower)}}>
                                         <div className="flex justify-between">
                                             <div className='flex justify-between'>
                                                 <img src={require('../assets/png/bank.png')} alt='logo' className='h-4 w-auto'/>
@@ -172,14 +169,11 @@ const UserDetail = (id) => {
                                             <a className="text-xs px-2 rounded-md bg-yellow-500 py-1">{p.total_payment !== null ?'Rp.' + p.total_payment : 'lihat'}</a>
                                         </div>
                                     </div>
-                                    </div>
                                 )
 
                             })}
+                            
                         </div>
-                            
-                            
-                        
                         
                     </div>
                     <div className="bg-white p-5 rounded-xl border border-gray-50 ">
@@ -188,11 +182,11 @@ const UserDetail = (id) => {
                             Riwayat Pembayaran
                         </span>
                         </div>
-                    <div className='overflow-auto max-h-60'>
+                    <div className='overflow-auto max-h-72'>
                         {payment[0] === undefined ? null :
                             payment.map(p => {
                                 return (
-                                    <div className="flex flex-col  cursor-pointer" onClick={() => {goToPembayaranDetail(p.id_mitra)}}>
+                                    <div className="flex flex-col cursor-pointer" onClick={() => {goToPembayaranDetail(p.id_mitra)}}>
                                         <div className="flex flex-col bg-gray-200 p-2 rounded-sm mt-2 gap-2">
                                             <div className="flex justify-between ">
                                                 <div className='flex justify-between'>
@@ -225,8 +219,7 @@ const UserDetail = (id) => {
 
                     </div>
                 </div>
-                {/* End Second Row */}
-                {/* Start Third Row */}
+               
                 <div className="grid grid-cols-1 md:grid-cols-5 items-start px-4 xl:p-0 gap-y-4 md:gap-6">
                     <div className="col-start-1 col-end-5">
                     <h2 className="text-xs md:text-sm text-gray-800 font-bold tracking-wide">
@@ -258,7 +251,7 @@ const UserDetail = (id) => {
                         </h2>
                         </div>
                     </div>
-                    {/* <img src= {require('../assets/png/login.jpg')}/> */}
+                    
                    
                     </div>
                     <div className="col-span-3 bg-white p-6 rounded-xl border border-gray-50 flex flex-col space-y-6">
@@ -290,13 +283,14 @@ const UserDetail = (id) => {
                     </ul>
                     </div>
                 </div>
-                {/* End Third Row */}
+               
                 </div>
             </main>
-            </div>
-            </div>     
+            </div> 
+        </div>
         }   
         </div>
+        
     )
 }
 
