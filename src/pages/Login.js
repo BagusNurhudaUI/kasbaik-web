@@ -24,6 +24,7 @@ const  Login = () =>{
                 password: password,
             })
             .then((response) =>{
+                console.log(response.data);
                 const token = response.data.tokenweb
                 localStorage.setItem('token2', token);
                 navigate("/home")
