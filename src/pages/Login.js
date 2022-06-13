@@ -19,15 +19,18 @@ const  Login = () =>{
     const login = async(e) => {
         e.preventDefault();
         try {
+            console.log('ini console log sebelum fetch api');
             await axios.post('http://localhost:8080/login', {
                 email: email,
                 password: password,
             })
             .then((response) =>{
-                console.log(response.data);
+                console.log( response.data);
                 const token = response.data.tokenweb
                 localStorage.setItem('token2', token);
+                console.log('sebelum navigate');
                 navigate("/home")
+                console.log('setelah navigate');
             })
         } catch (error) {
             console.log(error.message);
