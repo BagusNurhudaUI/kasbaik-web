@@ -33,7 +33,6 @@ const Peminjaman = () => {
             .then( async (response) =>{
                 setPeminjaman(response.data.peminjaman)
                 setPembayaran(response.data.pembayaran)
-                console.log(peminjaman);
                 await client.get(`/mitraadmin/${response.data.peminjaman.id_mitra}` , {
                     headers :
                         {      
@@ -71,7 +70,7 @@ const Peminjaman = () => {
 
     useEffect(() => {
         GetInfo()
-    }, [])
+    }, [peminjaman, pembayaran])
 
     return (
         <div>
