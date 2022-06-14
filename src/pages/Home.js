@@ -9,22 +9,22 @@ import {Chart, ArcElement} from 'chart.js'
 import { Chart as ChartJS} from "chart.js/auto";
 import Footer from '../components/Footer';
 import NotAuth from '../components/NotAuth';
-Chart.register(ArcElement);
+import client from '../config.js'
 
+Chart.register(ArcElement);
 
 export default function Home (){
     const [jwt, setjwt] = useState('');
     const [isAuth, setisAuth] = useState(true);
     const [cookies, setCookie] = useCookies('');
     const [user, setUser] = useState({});
-    const [datahome, setDatahome] = useState();
     const [totaluser, setTotaluser] = useState(0)
     const [totalmitra, setTotalmitra] = useState(0)
     const [peminjaman, setPeminjaman] = useState(0)
     const [totalpayment, setTotalpaymnet] = useState(0)
     const [payment, setPayment] = useState({})
+    const [infoData, setInfoData] = useState([])
     const navigate = useNavigate()
-    
     
     const userData = {
         labels: ['Pending', 'Rejected', 'Accepted',
@@ -32,7 +32,7 @@ export default function Home (){
         datasets: [
           {
             label: "Status Peminjaman",
-            data: [65, 59, 80, 81, 56],
+            data: [infoData.pen, infoData.rej, infoData.acc, infoData.pay, infoData.done],
             backgroundColor: [
               "rgba(75,192,192,1)",
               "#ecf0f1",
@@ -51,7 +51,7 @@ export default function Home (){
         const token = localStorage.getItem("token2") || "";
         try {
             
-            await axios.get('http://localhost:8080/home', {
+            await client.get(`/home`, {
                 headers :
                     {      
                         "authorization": token,      
@@ -72,25 +72,46 @@ export default function Home (){
 
     const GetInfoTotal = async(e) => {
         const token = localStorage.getItem("token2") || "";
+        
         try {
-            await axios.get('http://localhost:8080/jumlahtotal', {
+            await client.get('/jumlahtotal', {
                 headers :
                     {      
                         "authorization": token,      
                     }  
             })
             .then((response) =>{
+                let acc =0, rej=0 , pen=0 , pay =0, done = 0 ;
+                console.log(response.data);
                 setTotaluser(response.data.totaluser.length)
                 setTotalmitra(response.data.totalmitra.length)
                 setPeminjaman(response.data.totalborrower.length)
                 setTotalpaymnet(response.data.totalpayment)
                 setPayment(response.data.payment)
-                console.log(payment[0]===undefined);
+                response.data.totalborrower.map(p => {
+                    if(p.status === 'done'){
+                        done=done +1
+                    }else if(p.status === 'payment'){
+                        pay++
+                    }else if(p.status === 'accepted'){
+                        acc++
+                    }else if(p.status === 'rejected'){
+                        rej++
+                    }else if(p.status === 'pending'){
+                        pen++
+                    }
+                })
+                const data = { done:done, pay:pay, acc:acc, rej:rej, pen:pen}
+                setInfoData(data)
             })
-            
+            console.log(infoData);
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const goToPembayaranDetail = (id_payment) => {
+        navigate(`/pembayaran/${id_payment}`)
     }
 
 
@@ -120,7 +141,7 @@ export default function Home (){
             isAuth ? 
             <div className="bg-gray-100 h-full">
             <Navbar id_user={user.id_user}/>
-            <main className="container mx-w-6xl  mx-auto py-4 h-full min-h-screen">
+            <main className="container mx-w-6xl  mx-auto py-4 h-full min-h-screen ">
                 <div className="flex flex-col space-y-8">
                 {/* First Row */}
                 <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-5 px-4 xl:p-0 gap-y-4 md:gap-6">
@@ -136,7 +157,7 @@ export default function Home (){
                         </div>
                         <div className="flex gap-2 md:gap-4 justify-between items-center">
                         <div className="flex flex-col space-y-4">
-                            <h2 className="text-gray-800 font-bold tracking-widest leading-tight">
+                            <h2 className="text-gray-800 font-bold tracking-wider ">
                             {user.username ? user.username : <p className="text-italic">not logged</p> }
                             </h2>
                             <div className="flex items-center gap-4">
@@ -144,8 +165,8 @@ export default function Home (){
                             </p>
                             </div>
                         </div>
-                        <h2 className="text-lg md:text-xl xl:text-3xl text-gray-700 font-black tracking-wider sm:text-sm">
-                            <span className="md:text-xl ">Rp</span>
+                        <h2 className="md:text-lg sm:text-md xl:text-3xl text-gray-700 font-black tracking-wider sm:text-sm">
+                            <span className="md:text-lg sm:text-md ">Rp.</span>
                             305.683.237
                         </h2>
                         </div>
@@ -157,7 +178,7 @@ export default function Home (){
                             Lihat Akun
                         </a>
                         <a
-                            onClick={GetInfo}
+                            href="/home"
                             className="bg-yellow-50 px-5 py-3 w-full text-center md:w-auto rounded-lg text-yellow-600 text-xs tracking-wider font-semibold hover:bg-yellow-500 hover:text-white cursor-pointer"
                         >
                             Refresh
@@ -261,7 +282,7 @@ export default function Home (){
                             Pembayaran
                         </p>
                         <h3 className="mt-2 text-lg text-emerald-800 font-bold">
-                            Rp.{totalpayment}
+                            Rp.{totalpayment.toLocaleString("id-ID")}
                         </h3>
                         <span className="mt-2 text-xs text-gray-500">
                         Update terakhir 1 menit yang lalu
@@ -287,26 +308,34 @@ export default function Home (){
                     </div>
                     <div className="col-span-2 bg-white p-6 rounded-xl border border-gray-50 flex flex-col space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 flex justify-between items-center">
-                        <div className="p-4 cursor-pointer border">
-                        <span className="text-xs text-gray-500 font-semibold">Daily</span>
-                        <h2 className="text-gray-800 font-bold tracking-wider">
-                            $ 27.80
+                        <div className="p-2 cursor-pointer border">
+                        <span className="text-xs text-gray-500 font-semibold">Pending</span>
+                        <h2 className="text-gray-800 font-normal tracking-wider pt-1">
+                        {infoData.pen}
                         </h2>
                         </div>
-                        <div className="p-4 cursor-pointer border">
+                        <div className="p-2 cursor-pointer border">
                         <span className="text-xs text-gray-500 font-semibold">
-                            Weekly
+                            Payment
                         </span>
-                        <h2 className="text-gray-800 font-bold tracking-wider">
-                            $ 192.92
+                        <h2 className="text-gray-800 font-normal tracking-wider pt-1">
+                        {infoData.pay}
                         </h2>
                         </div>
-                        <div className="p-4 cursor-pointer border">
+                        <div className="p-2 cursor-pointer border">
                         <span className="text-xs text-gray-500 font-semibold">
-                            Monthly
+                            Rejected
                         </span>
-                        <h2 className="text-gray-800 font-bold tracking-wider">
-                            $ 501.10
+                        <h2 className="text-gray-800 font-normal tracking-wider pt-1">
+                        {infoData.rej}
+                        </h2>
+                        </div>
+                        <div className="p-2 cursor-pointer border">
+                        <span className="text-xs text-gray-500 font-semibold">
+                            Done
+                        </span>
+                        <h2 className="text-gray-800 font-normal tracking-wider pt-1">
+                        {infoData.done}
                         </h2>
                         </div>
                     </div>
@@ -330,17 +359,17 @@ export default function Home (){
                         
                         {payment[0] === undefined ? <div></div> :
                         payment.map((pay ,i) => {
-                            if(i >= 7){
+                            if(i >= 6){
                             return;
                             }
                             return (
-                             <li className="py-3 flex justify-between text-sm text-gray-500 font-semibold">
-                             <p className="px-4 font-semibold flex items-center">{pay.createdAt}</p>
-                             <p className="px-4 text-gray-600 flex items-center">{pay.nama_lengkap}</p>
-                             <p className="px-4 tracking-wider flex items-center">{pay.payment_method}</p>
-                             <p className="px-4 text-emerald-800 flex items-center">{pay.partner_name}</p>
+                             <li className="py-3 my-2 flex justify-between text-sm text-gray-500 font-semibold cursor-pointer" onClick={()=> {goToPembayaranDetail(pay.id_payment)}}>
+                             <p className="px-3 font-semibold flex text-xs items-center">{pay.createdAt.split(".")[0].replace('T', ' ')}</p>
+                             <p className="px-3 text-gray-600 flex items-center">{pay.user}</p>
+                             <p className="px-3 tracking-wider flex items-center">{pay.payment_method}</p>
+                             <p className="px-3 text-emerald-800 flex items-center">{pay.mitra.partner_name}</p>
                              <p className="md:text-base text-gray-800 flex items-center gap-2">
-                                 Rp.{pay.amount_payment}
+                                 Rp.{pay.amount_payment.toLocaleString("id-ID")}
                              </p>
                              </li>
                             )

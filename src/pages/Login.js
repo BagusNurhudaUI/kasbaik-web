@@ -4,7 +4,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar'
 import Home from './Home'
 import { useCookies } from 'react-cookie';
-
+import client from '../config.js'
 // const API_URL = 'http://localhost:8080'
 const  Login = () =>{
     const [email, setEmail] = useState('');
@@ -20,7 +20,7 @@ const  Login = () =>{
         e.preventDefault();
         try {
             console.log('ini console log sebelum fetch api');
-            await axios.post('http://localhost:8080/login', {
+            await client.post(`/login`, {
                 email: email,
                 password: password,
             })

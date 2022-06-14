@@ -7,6 +7,8 @@ import ClipLoader from "react-spinners/ClipLoader";
 import foto from '../../assets/png/account1.png'
 import Footer from '../../components/Footer';
 import Loading from '../../components/Loading';
+import client from '../../config.js'
+
 const User =  () => {
     const [pembayaran, setPembayaran] = useState([])
     const [isAuth, setisAuth] = useState(true);
@@ -16,7 +18,7 @@ const User =  () => {
 
         try {
             const token = localStorage.getItem("token2");
-            await axios.get('http://localhost:8080/paymentadmin', {
+            await client.get('/paymentadmin', {
                 headers :
                     {      
                         "authorization": token,      

@@ -5,17 +5,19 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Loading from '../components/Loading';
+import client from '../config.js'
 
 const Mitra = () => {
     const [mitra, setMitra] = useState([])
     const [borrower, setBorower] = useState([])
     const [pengeluaran, setPengeluaran] = useState([])
+    
     const getUser = async () => {
         let temp = 0
         let data = []
         try {
             const token = localStorage.getItem("token2");
-            await axios.get('http://localhost:8080/listAkunMitra', {
+            await client.get('/listAkunMitra', {
                 headers :
                     {      
                         "authorization": token,      
@@ -25,28 +27,14 @@ const Mitra = () => {
                 console.log(response.data);
                 setMitra(response.data.mitra)
                 setBorower(response.data.jumlahuser)
-                response.data.jumlahuser.map(borrower => {
-                    temp =0
-                    borrower.map(b => {
-                        if(b[0]){
-                            temp=0
-                        } else {
-                            temp = temp + b.loan_amount
-                        }
-
-                    })
-                    data.push(temp)
-                    console.log(data);
-                    
-                })
-                setPengeluaran(data)
-                console.log('pengeluaran',pengeluaran);
             })
     
         } catch (err) {
             console.log(err);
         }
     }
+
+    
     const navigate = useNavigate()
     const getMitraId =(id_mitra)=> {
         navigate(`/mitra/${id_mitra}`)
@@ -81,6 +69,8 @@ const Mitra = () => {
                     </div>
                     {mitra[0]=== undefined ? null : 
                     mitra.map((p, i) => {
+                        let totalPay = 0
+                        let totalGet = 0
                         return (
                             <div  className="bg-white p-4 rounded-xl border border-gray-50 ">
                         <div className='flex sm:flex-wrap md:justify-between gap-4'>
@@ -93,20 +83,28 @@ const Mitra = () => {
                             </div>
                             <div class="flex justify-between space-x-3 sm:space-x-1 items-center">
                                 <img class="w-10 h-10 rounded-full " src={require('../assets/png/account-multiple-outline.png')} alt="foto" />
-                                    <div className=" text-sm text-left ">{borrower[i].length} User</div>
+                                    <div className=" text-sm text-left ">{p.totaluser} User</div>
                             </div>
                             <div class="flex justify-between space-x-3 sm:space-x-1 items-center">
                                 <img class="w-10 h-10 rounded-full " src={require('../assets/png/book-information-variant.png')} alt="foto" />
                                 <div class="space-y-0.5 font-sm text-gray-500 flex flex-col justify-start">
-                                    <div className=" text-sm text-left ">Peminjaman : {borrower[i].length}</div>
-                                    <div class="text-sm text-gray-500 ">Pembayaran :</div>
+                                    <div className=" text-sm text-left ">Peminjaman : {p.peminjaman.length} </div>
+                                    <div class="text-sm text-gray-500 ">Pembayaran : {p.payment.length}</div>
                                 </div>
                             </div>
                             <div class="flex justify-between space-x-3 sm:space-x-1 items-center">
                                 <img class="w-10 h-10 rounded-full " src={require('../assets/png/currency-usd.png')} alt="foto" />
                                 <div class="space-y-0.5 font-sm text-gray-500 flex flex-col justify-start">
-                                    <div className=" text-sm text-left ">Pemasukan :</div>
-                                    <div class="text-sm text-gray-500 whitespace-pre">Pengeluaran : Rp.{pengeluaran[i] === 0 ? '0           .' : pengeluaran[i]}
+                                    <div className=" text-sm text-left ">Pemasukan : Rp. {p.payment.map(p => {
+                                        totalPay = totalPay + p.amount_payment
+                                    },[100])}
+                                    {totalPay.toLocaleString("id-ID")}</div>
+                                    <div class="text-sm text-gray-500 whitespace-pre">Pengeluaran : Rp. {p.peminjaman.map(p => {
+                                        if(p.status === 'done' || p.status === 'payment'){
+                                            totalGet = totalGet + p.loan_amount
+                                        } 
+                                    },[100])}
+                                    {totalGet.toLocaleString("id-ID")}
                                     </div>
                                 </div>
                             </div>

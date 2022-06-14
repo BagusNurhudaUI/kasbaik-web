@@ -7,6 +7,8 @@ import ClipLoader from "react-spinners/ClipLoader";
 import foto from '../../assets/png/account1.png'
 import Footer from '../../components/Footer';
 import Loading from '../../components/Loading';
+import client from '../../config.js'
+
 const User =  () => {
     const [peminjaman, setPeminjaman] = useState([])
     const [isAuth, setisAuth] = useState(true);
@@ -15,7 +17,7 @@ const User =  () => {
         const data = []
         try {
             const token = localStorage.getItem("token2");
-            await axios.get('http://localhost:8080/listBorrower', {
+            await client.get('/listBorrower', {
                 headers :
                     {      
                         "authorization": token,      
@@ -38,7 +40,7 @@ const User =  () => {
                 if(p.total_payment === null){
                   total_payment= 'not payment'
                 } else {
-                  total_payment = `Rp. ${p.total_payment}`
+                  total_payment = `Rp. ${p.total_payment.toLocaleString("id-ID")}`
                 }
                 const data1 = {
                   id_user : p.id_user,
@@ -46,7 +48,7 @@ const User =  () => {
                   name : p.nama_lengkap,
                   imgUrl : image,
                   email : p.email,
-                  loan_amount : `Rp. ${p.loan_amount}`,
+                  loan_amount : `Rp. ${p.loan_amount.toLocaleString("id-ID")}`,
                   pinjaman_ke : p.pinjaman_ke,
                   phone : p.phone,
                   profesi : p.profesi,

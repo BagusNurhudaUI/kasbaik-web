@@ -95,7 +95,7 @@ function GlobalFilter({
 
 export function AvatarCell({ value, column, row }) {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center m-auto justify-center">
       <div className="flex-shrink-0 h-10 w-10">
         <img className="h-10 w-10 rounded-full" src={row.original[column.imgAccessor]} alt="" />
       </div>
@@ -178,10 +178,10 @@ function Table({ columns, data }) {
                         // we can add them into the header props
                         <th
                           scope="col"
-                          className="group px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          className="group m-auto py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                           {...column.getHeaderProps(column.getSortByToggleProps())}
                         >
-                          <div className="flex items-center justify-center">
+                          <div className="flex items-center justify-center mx-auto">
                             {column.render('Header')}
                             {/* Add a sort direction indicator */}
                             <span>
@@ -213,7 +213,7 @@ function Table({ columns, data }) {
                                 return (
                                     <td
                                         {...cell.getCellProps()}
-                                        className="md:px-10 md:py-4 whitespace-nowrap sm:px-2 sm:py-2 "
+                                        className=" whitespace-nowrap md:py-4 sm:px-2 sm:py-3 "
                                         role="cell"
                                         
                                     >
@@ -236,7 +236,7 @@ function Table({ columns, data }) {
                             
                                 <td
                                 {...cell.getCellProps()}
-                                className="md:px-6 md:py-4 whitespace-nowrap sm:px-2 sm:py-2"
+                                className=" md:py-4 whitespace-nowrap sm:px-2 sm:py-2"
                                 role="cell"
                                 >
                                 {cell.column.Cell.name === "defaultRenderer"

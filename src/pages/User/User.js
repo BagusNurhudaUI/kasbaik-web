@@ -7,6 +7,8 @@ import ClipLoader from "react-spinners/ClipLoader";
 import foto from '../../assets/png/account1.png'
 import Footer from '../../components/Footer';
 import Loading from '../../components/Loading';
+import client from '../../config'
+
 const User =  () => {
     const [user, setUser] = useState([])
     const [isAuth, setisAuth] = useState(true);
@@ -15,7 +17,7 @@ const User =  () => {
         const data = []
         try {
             const token = localStorage.getItem("token2");
-            await axios.get('http://localhost:8080/listAkunUser', {
+            await client.get('/listAkunUser', {
                 headers :
                     {      
                         "authorization": token,      
@@ -26,12 +28,11 @@ const User =  () => {
               const obj = response.data
               console.log(obj);
               obj.forEach((user) => {
-                const pinjaman = 0
                 let image = ''
                 if(user.foto_diri === null){
                   image= `${foto}`
                 }else {
-                  image=`${user.foto_diri}`
+                  image=`${user.profile.foto_diri}`
                 }
                 console.log(image);
                 const data1 = {
@@ -39,11 +40,11 @@ const User =  () => {
                     name : user.username,
                     email : user.email,
                     phone : user.phone,
-                    pinjaman : pinjaman,
-                    alamat : user.alamat_tinggal,
-                    gender: user.gender,
-                    profesi: user.profesi,
-                    usia: user.usia,
+                    pinjaman : user.peminjaman,
+                    alamat : user.profile.alamat_tinggal,
+                    gender: user.profile.gender,
+                    profesi: user.profile.profesi,
+                    usia: user.profile.usia,
                     imgUrl : image,
                 }
                 data.push(data1)
