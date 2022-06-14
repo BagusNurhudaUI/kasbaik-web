@@ -30,9 +30,10 @@ const Peminjaman = () => {
                         "authorization": token,      
                     } 
             })
-            .then(async (response) =>{
+            .then( async (response) =>{
                 setPeminjaman(response.data.peminjaman)
                 setPembayaran(response.data.pembayaran)
+                console.log(peminjaman);
                 await client.get(`/mitraadmin/${response.data.peminjaman.id_mitra}` , {
                     headers :
                         {      
@@ -40,16 +41,20 @@ const Peminjaman = () => {
                         } 
                 })
                 .then((response1) => {
-                    console.log(response1.data);
+                    
                     setMitra(response1.data.profile[0])
                 })
                 
             })
-            console.log(peminjaman);
-            console.log(pembayaran);
+            
         } catch (err) {
             console.log(err);
         }
+    }
+
+    const click = function(){
+        console.log(peminjaman);
+        console.log(pembayaran);
     }
 
     const navigate = useNavigate()
@@ -133,7 +138,7 @@ const Peminjaman = () => {
                         </div>
                         <div className="col-span-2 p-6 rounded-2xl bg-gradient-to-r from-gray-100 to-gray-200 flex flex-col justify-between ">
                         <div className="flex flex-col">
-                            <p className="text-gray-700 font-bold mb-4">Detail Peminjaman</p>
+                            <p className="text-gray-700 font-bold mb-4">Detail Peminjaman <button onClick={click}>CLICK</button></p>
                             <div className="mt-1 text-gray-700 font-normal max-w-sm justify-start">
                             <div className=" flex flex-col space-y-3 font-medium md:text-md sm:text-s">
                                     <div className="flex justify-center">
@@ -144,7 +149,7 @@ const Peminjaman = () => {
                                     <div className="flex justify-center">
                                         <p className="text-gray-600 flex justify-between">
                                     Jumlah Pinjam : Rp.
-                                    {peminjaman === undefined ? null : peminjaman.loan_amount.toLocaleString("id-ID")}
+                                    {peminjaman === undefined ? null : peminjaman.loan_amount}
                                         </p>
                                     </div>
                                     <div className="flex justify-center">
@@ -154,7 +159,7 @@ const Peminjaman = () => {
                                     </div>
                                     <div className="flex justify-center">
                                         <p className=" text-gray-600 flex justify-between">
-                                    Alasan Peminjaman   : {peminjaman.reason_borrower}
+                                    Alasan Peminjaman   : "{peminjaman.reason_borrower}"
                                         </p>
                                     </div>
                                     <div className="flex justify-center">
@@ -170,7 +175,7 @@ const Peminjaman = () => {
                                     <div className="flex justify-center">
                                         <p className=" text-gray-600 flex justify-between">
                                     Total Bayar: Rp.
-                                    {peminjaman === undefined ? null :  peminjaman.total_payment.toLocaleString("id-ID")}
+                                    {peminjaman === undefined ? null :  peminjaman.total_payment}
                                         </p>
                                     </div>
                                 </div>
