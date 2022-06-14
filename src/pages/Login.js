@@ -32,6 +32,7 @@ const  Login = () =>{
                 navigate("/home")
                 console.log('setelah navigate');
             })
+            
         } catch (error) {
             console.log(error.message);
             if (error.message === 'Network Error'){
@@ -69,8 +70,7 @@ const  Login = () =>{
                     <label className="block text-gray-700">Email Address</label>
                     <input
                       type="email"
-                      name=""
-                      id=""
+                      
                       placeholder="Enter Email Address"
                       className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                       autofocus=""
@@ -83,8 +83,7 @@ const  Login = () =>{
                     <label className="justify-start text-gray-700">Password</label>
                     <input
                       type="password"
-                      name=""
-                      id=""
+                      
                       placeholder="Enter Password"
                       minLength={6}
                       className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500

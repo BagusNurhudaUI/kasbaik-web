@@ -30,7 +30,7 @@ const Peminjaman = () => {
                         "authorization": token,      
                     } 
             })
-            .then( async (response) =>{
+            .then(async (response) =>{
                 setPeminjaman(response.data.peminjaman)
                 setPembayaran(response.data.pembayaran)
                 await client.get(`/mitraadmin/${response.data.peminjaman.id_mitra}` , {
@@ -39,15 +39,14 @@ const Peminjaman = () => {
                             "authorization": token,      
                         } 
                 })
-                .then((response) => {
-                    console.log(response.data);
-                    setMitra(response.data.profile[0])
+                .then((response1) => {
+                    console.log(response1.data);
+                    setMitra(response1.data.profile[0])
                 })
-
+                
             })
             console.log(peminjaman);
             console.log(pembayaran);
-
         } catch (err) {
             console.log(err);
         }
@@ -144,7 +143,8 @@ const Peminjaman = () => {
                                     </div>
                                     <div className="flex justify-center">
                                         <p className="text-gray-600 flex justify-between">
-                                    Jumlah Pinjam : Rp.{peminjaman.loan_amount.toLocaleString("id-ID")}
+                                    Jumlah Pinjam : Rp.
+                                    {peminjaman === undefined ? null : peminjaman.loan_amount.toLocaleString("id-ID")}
                                         </p>
                                     </div>
                                     <div className="flex justify-center">
@@ -169,7 +169,8 @@ const Peminjaman = () => {
                                     </div>
                                     <div className="flex justify-center">
                                         <p className=" text-gray-600 flex justify-between">
-                                    Total Bayar: Rp.{peminjaman.total_payment.toLocaleString("id-ID")}
+                                    Total Bayar: Rp.
+                                    {peminjaman === undefined ? null :  peminjaman.total_payment.toLocaleString("id-ID")}
                                         </p>
                                     </div>
                                 </div>
@@ -206,7 +207,9 @@ const Peminjaman = () => {
                                                 <p className='text-xs px-2 flex align-text-bottom'>No.{p.pinjaman_ke}</p>
                                             </div>
                                             
-                                            <p className='text-s font-medium'>Rp.{p.amount_payment.toLocaleString("id-ID")} </p>
+                                            <p className='text-s font-medium'>Rp.
+                                            {p.amount_payment.toLocaleString("id-ID")} 
+                                            </p>
                                             <div onClick={() => {
                                                 goToPembayaranDetail(p.id_payment)
                                             }} className="cursor-pointer text-s px-2 rounded-md bg-yellow-500 hover:bg-yellow-200">lihat</div>

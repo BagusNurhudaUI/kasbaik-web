@@ -2,7 +2,7 @@ import React , {useState, useRef} from 'react'
 import axios from 'axios';
 import { useNavigate, useHistory } from 'react-router-dom';
 import { Transition } from "@headlessui/react";
-
+import client from '../config.js'
 
 
 const Navbar = (props) => {
@@ -19,7 +19,7 @@ const Navbar = (props) => {
         console.log(token);
         try {
             console.log('masuk kesini');
-            await axios.get('http://localhost:8080/logout', {
+            await client.get('/logout', {
                 headers :
                 {      
                     "authorization": token,      

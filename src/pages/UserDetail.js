@@ -33,6 +33,7 @@ const UserDetail = (id) => {
                 setPeminjaman(response.data.peminjaman)
                 setPayment(response.data.paymenthistory)
                 setAktif(response.data.aktif[0])
+                
                 response.data.peminjaman.map(p => {
                     if(p.status === 'done'){
                         done=done +1
@@ -302,8 +303,12 @@ const UserDetail = (id) => {
                             </a>
                         </div>
                         <div className="divide-y-2 divide-gray-100 overflow-x-auto w-full mt-1 gap-1 rounded-md">
-                            <div className="bg-gray-100 text-s pt-2">Target lunas : {aktif.target_lunas} </div>
-                            <div className="bg-gray-100 text-s pb-2">Kekurangan : Rp.{(aktif.loan_amount - aktif.total_payment).toLocaleString("id-ID")} </div>
+                            <div className="bg-gray-100 text-s pt-2">Target lunas : 
+                            {aktif ===  undefined ? ' tidak ada' : aktif.target_lunas}
+                             </div>
+                            <div className="bg-gray-100 text-s pb-2">Kekurangan : Rp.
+                            {aktif === undefined ? '0' :(aktif.loan_amount - aktif.total_payment).toLocaleString("id-ID")} 
+                            </div>
                         </div>
                         </div>
                     </div>
